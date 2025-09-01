@@ -59,7 +59,7 @@
   "price_lookahead": 8,
   "bl_pv_lookahead": 4,
 
-  "freq": "15T",
+  "freq": "15min",
   "minutes": 15,
 
   "time_steps_per_hour": 4,

@@ -368,7 +368,7 @@ class ScheduleGenerator:
                     # emergency
                     em_start_date = dt.datetime(step.year, step.month, step.day, hour=2, minute=0)
                     em_end_date = dt.datetime(step.year, step.month, step.day, hour=4, minute=0)
-                    dr = pd.date_range(start=em_start_date, end=em_end_date, freq="15T")
+                    dr = pd.date_range(start=em_start_date, end=em_end_date, freq="15min")
                     trip_steps = (em_end_date - em_start_date).total_seconds() / 3600 * 4
                     total_distance = np.random.normal(self.sc.avg_distance_em, self.sc.dev_distance_em)
                     total_distance = max([total_distance, self.sc.min_em_distance])

@@ -18,7 +18,7 @@ class TimeConfig:
         # self.time_steps_per_hour = 1
         # NB: when using hourly frequency, some info can get lost, causing inaccuracies (down-sampling)
 
-        self.freq = env_config.get('freq', '15T')  # Frequency string needed to sample in pandas
+        self.freq = env_config.get('freq', '15min')  # Frequency string needed to sample in pandas
         self.minutes = env_config.get('minutes', 15)  # Amount of minutes per time step
         self.time_steps_per_hour = env_config.get('time_steps_per_hour', 4)  # Number of time steps per hour
         self.dt: float = self.minutes / 60  # Hours per timestep, variable used in the energy calculations

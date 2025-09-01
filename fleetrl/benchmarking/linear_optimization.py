@@ -244,7 +244,7 @@ class LinearOptimization(Benchmark):
             for i in range(length_time_load_pv)]
         actions = pd.DataFrame({"action": actions})
 
-        actions.index = pd.date_range(start=start_time, end=end_time, freq="15T")
+        actions.index = pd.date_range(start=start_time, end=end_time, freq="15min")
 
         actions["hid"] = actions.index.hour + actions.index.minute / 60
 

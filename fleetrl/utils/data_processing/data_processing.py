@@ -390,29 +390,38 @@ class DataLoader:
         price_total_avg = price.mean()
         price.index = db.loc[db["ID"]==0, "date"]
         resampled_price = price.resample("ME")
-        result = pd.DataFrame()
+
+        result = []
         for name, group in resampled_price:
             chunk_avg = group.mean()
             offset_prices = group - chunk_avg + price_total_avg
-            result = pd.concat([result, offset_prices])
-        result.columns=["price_reward_curve"]
-        result = result.reset_index()
-        db = pd.concat((db, result["price_reward_curve"]), axis=1)
+            result.append(offset_prices)
+
+        if result:  # Empty Check
+            result = pd.concat(result)
+            result = result.to_frame(name="price_reward_curve").reset_index()
+            db = pd.concat((db, result["price_reward_curve"]), axis=1)
+        else:
+            db["price_reward_curve"] = np.nan
+
 
         tariff = db["tariff"].dropna()
         tariff = tariff.mul(1 - ev_conf.feed_in_deduction)
         tariff_total_avg = tariff.mean()
         tariff.index = db.loc[db["ID"]==0, "date"]
         resampled_tariff = tariff.resample("ME")
-        result = pd.DataFrame()
+        result = []
         for name, group in resampled_tariff:
             chunk_avg = group.mean()
             offset_tariff = group - chunk_avg + tariff_total_avg
-            result = pd.concat([result, offset_tariff])
-        result.columns=["tariff_reward_curve"]
-        result = result.reset_index()
-        db = pd.concat((db, result["tariff_reward_curve"]), axis=1)
+            result.append(offset_tariff)
 
+        if result:
+            result = pd.concat(result)
+            result = result.to_frame(name="tariff_reward_curve").reset_index()
+            db = pd.concat((db, result["tariff_reward_curve"]), axis=1)
+        else:
+            db["tariff_reward_curve"] = np.nan
         return db
 
     @staticmethod
