@@ -190,7 +190,7 @@ class DataLoader:
         merged_cons.loc[merged_cons["There"] == 0, "len"] = 0
 
         # fill NaN values
-        merged_cons.fillna(0, inplace=True)
+        merged_cons = merged_cons.fillna(0)
 
         # match departure dates with dates in db, forward direction, sort by ID, match on date
         merged_time_left = pd.merge_asof(self.schedule.sort_values("date"),
@@ -207,7 +207,7 @@ class DataLoader:
         # time left is 0 when the car is not there
         merged_time_left.loc[merged_time_left["There"] == 0, "time_left"] = 0
         # fill NaN values
-        merged_time_left.loc[:, "time_left"].fillna(0, inplace=True)
+        merged_time_left.loc[:, "time_left"] = merged_time_left["time_left"].fillna(0)
 
         # add computed information to db
         self.schedule["last_trip_total_consumption"] = merged_cons.loc[:, "consumption"]
@@ -389,7 +389,7 @@ class DataLoader:
         price = price.mul(ev_conf.variable_multiplier)
         price_total_avg = price.mean()
         price.index = db.loc[db["ID"]==0, "date"]
-        resampled_price = price.resample("M")
+        resampled_price = price.resample("ME")
         result = pd.DataFrame()
         for name, group in resampled_price:
             chunk_avg = group.mean()
@@ -403,7 +403,7 @@ class DataLoader:
         tariff = tariff.mul(1 - ev_conf.feed_in_deduction)
         tariff_total_avg = tariff.mean()
         tariff.index = db.loc[db["ID"]==0, "date"]
-        resampled_tariff = tariff.resample("M")
+        resampled_tariff = tariff.resample("ME")
         result = pd.DataFrame()
         for name, group in resampled_tariff:
             chunk_avg = group.mean()
@@ -419,13 +419,13 @@ class DataLoader:
     def _date_checker(df: pd.DataFrame, date_range: pd.DatetimeIndex) -> pd.DataFrame:
 
         input_start_year = df.iloc[0]["date"].year
-        date_range_start_year = date_range.iloc[0][0].year
+        date_range_start_year = date_range.iloc[0, 0].year
 
         if input_start_year != date_range_start_year:
             print("Start year of input data doesn't match simulation data range. Adjusting...")
             df["date"] = df["date"] + pd.DateOffset(years = date_range_start_year - input_start_year)
 
-        assert(df.iloc[0]["date"] == date_range.iloc[0][0]), "Invalid start time."
-        assert(df.iloc[-1]["date"].year == date_range.iloc[-1][0].year), "Invalid end year."
+        assert(df.iloc[0]["date"] == date_range.iloc[0, 0]), "Invalid start time."
+        assert(df.iloc[-1]["date"].year == date_range.iloc[-1, 0].year), "Invalid end year."
 
         return df

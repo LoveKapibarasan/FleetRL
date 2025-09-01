@@ -58,8 +58,8 @@ class ObserverWithPV(Observer):
         tariff["tariff"] = db["tariff"][price_start: price_end]
         tariff["date"] = db["date"][price_start: price_end]
         # resample data to only include one value per hour (the others are duplicates)
-        price = price.resample("H", on="date").first()["DELU"].values
-        tariff = tariff.resample("H", on="date").first()["tariff"].values
+        price = price.resample("h", on="date").first()["DELU"].values
+        tariff = tariff.resample("h", on="date").first()["tariff"].values
         # only take into account the current value, and the specified hours of lookahead
         price = np.multiply(np.add(price[0:price_lookahead + 1], ev_conf.fixed_markup), ev_conf.variable_multiplier)
         tariff = np.multiply(tariff[0:price_lookahead + 1], 1 - ev_conf.feed_in_deduction)
@@ -68,7 +68,7 @@ class ObserverWithPV(Observer):
         pv_end = np.where(db["date"] == (time + np.timedelta64(bl_pv_lookahead + 2, 'h')))[0][0]
         pv["pv"] = db["pv"][pv_start: pv_end]
         pv["date"] = db["date"][pv_start: pv_end]
-        pv = pv.resample("H", on="date").first()["pv"].values
+        pv = pv.resample("h", on="date").first()["pv"].values
         pv = pv[0:bl_pv_lookahead + 1]
 
         ###
