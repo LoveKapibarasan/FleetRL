@@ -85,7 +85,7 @@ class BasicEvaluation(Evaluation):
         mean_reward, _ = evaluate_policy(model, eval_norm_vec_env, n_eval_episodes=self.n_episodes, deterministic=True)
         print(mean_reward)
 
-        log_RL = model.env.env_method("get_log")[0]
+        log_RL = model.env.env_method("get_wrapper_attr", "get_log")[0]()
         log_RL.reset_index(drop=True, inplace=True)
         log_RL = log_RL.iloc[0:-2]
 
@@ -147,9 +147,11 @@ class BasicEvaluation(Evaluation):
 
         mean_per_hid_benchmark = benchmark_log.groupby("hour_id").mean()["Charging energy"].reset_index(drop=True)
         mean_all_benchmark = []
+        print("RL Time range:", rl_log["Time"].min(), "→", rl_log["Time"].max(), "len =", len(rl_log))
+        print("UC Time range:", benchmark_log["Time"].min(), "→", benchmark_log["Time"].max(), "len =", len(benchmark_log))
+
         for i in range(mean_per_hid_benchmark.__len__()):
             mean_all_benchmark.append(np.mean(mean_per_hid_benchmark[i]))
-
         mean_both = pd.DataFrame()
         mean_both["RL"] = np.multiply(mean_all_rl, 4)
         mean_both["benchmark charging"] = np.multiply(mean_all_benchmark, 4)

@@ -48,12 +48,12 @@ class DistributedCharging(Benchmark):
         dist_norm_vec_env.reset()
 
         for i in range(self.n_steps * self.time_steps_per_hour * self.n_episodes):
-            if dist_norm_vec_env.env_method("is_done")[0]:
+            if dist_norm_vec_env.env_method("get_wrapper_attr", "is_done")[0]:
                 dist_norm_vec_env.reset()
             dist_norm_vec_env.step(
-                ([np.clip(np.multiply(np.ones(self.n_evs), dist_norm_vec_env.env_method("get_dist_factor")[0]), 0, 1)]))
+                ([np.clip(np.multiply(np.ones(self.n_evs), dist_norm_vec_env.env_method("get_wrapper_attr", "get_dist_factor")[0]()), 0, 1)]))
 
-        dist_log: pd.DataFrame = dist_norm_vec_env.env_method("get_log")[0]
+        dist_log: pd.DataFrame = dist_norm_vec_env.env_method("get_wrapper_attr", "get_log")[0]()
 
         dist_log.reset_index(drop=True, inplace=True)
         dist_log = dist_log.iloc[0:-2]

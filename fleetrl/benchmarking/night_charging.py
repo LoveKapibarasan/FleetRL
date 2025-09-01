@@ -79,12 +79,12 @@ class NightCharging(Benchmark):
         charging = False
 
         for i in range(episode_length * self.time_steps_per_hour * n_episodes):
-            if night_norm_vec_env.env_method("is_done")[0]:
+            if night_norm_vec_env.env_method("get_wrapper_attr", "is_done")[0]:
                 night_norm_vec_env.reset()
             time: pd.Timestamp = night_norm_vec_env.env_method("get_time")[0]
             if ((time.hour >= 11) and (time.hour <= 14)) and (use_case == "ct"):
                 night_norm_vec_env.step(
-                    ([np.clip(np.multiply(np.ones(self.n_evs), night_norm_vec_env.env_method("get_dist_factor")[0]), 0, 1)]))
+                    ([np.clip(np.multiply(np.ones(self.n_evs), night_norm_vec_env.env_method("get_wrapper_attr", "get_dist_factor")[0]), 0, 1)]))
                 continue
             time: pd.Timestamp = night_norm_vec_env.env_method("get_time")[0]
             if (((charging_hour <= time.hour) and (charging_minute <= time.minute)) or (charging)):
@@ -97,7 +97,7 @@ class NightCharging(Benchmark):
             if charging and ((time - charging_start).total_seconds() / 3600 > int(max_time_needed)):
                 charging = False
 
-        night_log: pd.DataFrame = night_norm_vec_env.env_method("get_log")[0]
+        night_log: pd.DataFrame = night_norm_vec_env.env_method("get_wrapper_attr", "get_log")[0]()
 
         night_log.reset_index(drop=True, inplace=True)
         night_log = night_log.iloc[0:-2]

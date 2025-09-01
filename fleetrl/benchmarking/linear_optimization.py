@@ -263,7 +263,7 @@ class LinearOptimization(Benchmark):
         for i in range(self.n_steps * self.time_steps_per_hour):
             lin_norm_vec_env.step([np.multiply(np.ones(self.n_evs), env_actions[i])])
 
-        lin_log: pd.DataFrame = lin_norm_vec_env.env_method("get_log")[0]
+        lin_log: pd.DataFrame = lin_norm_vec_env.env_method("get_wrapper_attr", "get_log")[0]()
 
         lin_log.reset_index(drop=True, inplace=True)
         lin_log = lin_log.iloc[0:-2]

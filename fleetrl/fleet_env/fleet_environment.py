@@ -1076,4 +1076,3 @@ class FleetEnv(gym.Env):
             self.score_config.penalty_invalid_action = 0
         if self.env_config["ignore_overcharging_penalty"]:
             self.score_config.penalty_overcharging = 0
-

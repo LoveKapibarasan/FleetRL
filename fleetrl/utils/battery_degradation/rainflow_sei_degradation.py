@@ -129,10 +129,12 @@ class RainflowSeiDegradation(BatteryDegradation):
 
             rainflow_result = pd.DataFrame(columns=['Range', 'Mean', 'Count', 'Start', 'End'])
 
+            rows = []
             for rng, mean, count, i_start, i_end in rainflow.extract_cycles(np.tile(sorted_soc_list[i], 1)):
-                new_row = pd.DataFrame(
-                    {'Range': [rng], 'Mean': [mean], 'Count': [count], 'Start': [i_start], 'End': [i_end]})
-                rainflow_result = pd.concat([rainflow_result, new_row], ignore_index=True)
+                rows.append({'Range': rng, 'Mean': mean, 'Count': count, 'Start': i_start, 'End': i_end})
+
+            rainflow_result = pd.DataFrame(rows, columns=['Range', 'Mean', 'Count', 'Start', 'End'])
+
 
             # battery age in seconds for calendar aging
             battery_age = np.max(rainflow_result["End"]) * time_conf.dt * 3600

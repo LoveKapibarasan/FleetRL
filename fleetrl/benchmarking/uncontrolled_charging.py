@@ -49,11 +49,11 @@ class Uncontrolled(Benchmark):
         self.env_config = env_kwargs["env_config"]
 
         for i in range(episode_length * self.time_steps_per_hour * n_episodes):
-            if dumb_norm_vec_env.env_method("is_done")[0]:
+            if dumb_norm_vec_env.env_method("get_wrapper_attr", "is_done")[0]:
                 dumb_norm_vec_env.reset()
             dumb_norm_vec_env.step([np.ones(self.n_evs)])
 
-        dumb_log: pd.DataFrame = dumb_norm_vec_env.env_method("get_log")[0]
+        dumb_log: pd.DataFrame = dumb_norm_vec_env.env_method("get_wrapper_attr", "get_log")[0]()
 
         dumb_log.reset_index(drop=True, inplace=True)
         dumb_log = dumb_log.iloc[0:-2]
