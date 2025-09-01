@@ -403,8 +403,7 @@ class DataLoader:
             db = pd.concat((db, result["price_reward_curve"]), axis=1)
         else:
             db["price_reward_curve"] = np.nan
-
-
+            
         tariff = db["tariff"].dropna()
         tariff = tariff.mul(1 - ev_conf.feed_in_deduction)
         tariff_total_avg = tariff.mean()
