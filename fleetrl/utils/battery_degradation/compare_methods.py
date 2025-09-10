@@ -86,7 +86,8 @@ class Comparison:
                                       - (1 - self.alpha_sei) * np.e ** (-fd))
 
     @staticmethod
-    def l_without_sei(self, l, fd): return 1 - (1 - l) * np.e ** (-fd)
+    def l_without_sei(self, capacity_loss, fd): 
+        return 1 - (1 - capacity_loss) * np.e ** (-fd)
 
     def compare_methods(self, data, save:bool=False):
         fig, ax = plt.subplots(1,2, figsize=(10,5))
@@ -170,7 +171,7 @@ class Comparison:
             effective_dod = np.clip(dod * degradation_severity, 0, 1)
 
             # time of the cycle
-            t = (rainflow_data["End"] - rainflow_data["Start"]) * 0.25 * 3600
+            (rainflow_data["End"] - rainflow_data["Start"]) * 0.25 * 3600
             t_cal = np.max(rainflow_data["End"]) * 0.25 * 3600
 
             f_cyc = self.deg_rate_cycle(effective_dod, avg_soc, self.temp_ref)

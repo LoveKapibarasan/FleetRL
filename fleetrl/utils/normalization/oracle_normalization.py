@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 
 from fleetrl.utils.normalization.unit_normalization import Normalization
 from fleetrl.utils.load_calculation.load_calculation import LoadCalculation

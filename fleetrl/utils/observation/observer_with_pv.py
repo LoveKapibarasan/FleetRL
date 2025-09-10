@@ -84,7 +84,7 @@ class ObserverWithPV(Observer):
         # could also be a vector
         evse_power = load_calc.evse_max_power * np.ones(1)
 
-        num_cars = db["ID"].max() + 1
+        db["ID"].max() + 1
 
         month_sin = np.sin(2 * np.pi * time.month / 12)
         month_cos = np.cos(2 * np.pi * time.month / 12)

@@ -2,7 +2,6 @@ import os.path
 import json
 
 from fleetrl.fleet_env.fleet_environment import FleetEnv
-from fleetrl.benchmarking.benchmark import Benchmark
 
 from stable_baselines3.common.vec_env import SubprocVecEnv, VecNormalize
 from stable_baselines3.common.env_util import make_vec_env
@@ -12,18 +11,14 @@ from stable_baselines3.common.evaluation import evaluate_policy
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import datetime as dt
 import matplotlib.dates as mdates
 
-import seaborn as sns
 import matplotlib
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-
-matplotlib.rcParams.update({'font.size': 16})
-
 from fleetrl.agent_eval.evaluation import Evaluation
 
+matplotlib.rcParams.update({'font.size': 16})
 
 class BasicEvaluation(Evaluation):
 
@@ -36,10 +31,10 @@ class BasicEvaluation(Evaluation):
 
     @staticmethod
     def _change_param(env_kwargs: dict, key: str, val):
-        if env_kwargs["env_config"].__class__ == dict:
+        if isinstance(env_kwargs["env_config"], dict):
             # env_config is a dict which we can modify directly
             env_kwargs["env_config"][key] = val
-        elif env_kwargs["env_config"].__class__ == str:
+        elif isinstance(env_kwargs["env_config"], str):
             # env_config is a file path to a json file
             conf_path = env_kwargs["env_config"]
             # check that file exists and open json
@@ -437,9 +432,9 @@ class BasicEvaluation(Evaluation):
         first = self.n_evs
         last = self.n_evs * 2 - 1  # hours left at charger for each car
         if self.n_evs > 1:
-            hours_left = [obs[i][first:last].mean() for i in range(length)]
+            [obs[i][first:last].mean() for i in range(length)]
         else:
-            hours_left = [obs[i][first] for i in range(length)]
+            [obs[i][first] for i in range(length)]
 
         first = self.n_evs * 2
         last = self.n_evs * 2 + pr_lookahead  # price lookahead gives price in hour, hour+1, etc.
@@ -447,7 +442,7 @@ class BasicEvaluation(Evaluation):
 
         first = self.n_evs * 2 + pr_lookahead + 1
         last = self.n_evs * 2 + pr_lookahead * 2 + 1  # tariff paid when discharging, with lookahead
-        tariff = [obs[i][first] for i in range(length)]
+        [obs[i][first] for i in range(length)]
 
         first = self.n_evs * 2 + pr_lookahead * 2 + 2
         last = self.n_evs * 2 + pr_lookahead * 2 + 2 + bl_pv_lookahead  # building load lookahead

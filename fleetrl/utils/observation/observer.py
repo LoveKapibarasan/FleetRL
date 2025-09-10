@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 from fleetrl.utils.load_calculation.load_calculation import LoadCalculation
 from fleetrl.fleet_env.config.ev_config import EvConfig

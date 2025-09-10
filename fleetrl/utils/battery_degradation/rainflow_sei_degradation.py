@@ -86,7 +86,8 @@ class RainflowSeiDegradation(BatteryDegradation):
                                   - (1 - self.alpha_sei) * np.e ** (-fd))
 
     @staticmethod
-    def l_without_sei(l, fd): return 1 - (1 - l) * np.e ** (-fd)
+    def l_without_sei(capacity_loss, fd): 
+        return 1 - (1 - capacity_loss) * np.e ** (-fd)
 
     def calculate_degradation(self, soc_log: list, charging_power: float, time_conf: TimeConfig, temp: float) -> np.array:
 

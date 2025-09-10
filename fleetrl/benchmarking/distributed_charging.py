@@ -1,5 +1,3 @@
-import math
-from copy import copy
 
 from fleetrl.fleet_env.fleet_environment import FleetEnv
 from fleetrl.benchmarking.benchmark import Benchmark

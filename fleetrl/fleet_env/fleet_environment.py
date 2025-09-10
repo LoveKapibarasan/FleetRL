@@ -3,10 +3,6 @@ import json
 import gymnasium as gym
 import numpy as np
 import pandas as pd
-from typing import Literal
-import datetime
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 
 from fleetrl.fleet_env.config.ev_config import EvConfig
 from fleetrl.fleet_env.config.score_config import ScoreConfig
@@ -118,9 +114,9 @@ class FleetEnv(gym.Env):
         super().__init__()
 
         # Check that the input parameter config is passed properly - either as json or dict
-        assert (env_config.__class__ == dict) or (env_config.__class__ == str), 'Invalid config type.'
-        if env_config.__class__ == str:
-            assert os.path.isfile(env_config), f'Config file not found at {env_config}.'
+        assert isinstance(env_config, (dict, str)), "Invalid config type."
+        if isinstance(env_config, str):
+            assert os.path.isfile(env_config), f"Config file not found at {env_config}."
             self.env_config = self.read_config(conf_path=env_config)
         else:
             self.env_config = env_config
@@ -551,7 +547,8 @@ class FleetEnv(gym.Env):
                                     print(f"A car left the station without reaching the target SoC."
                                           f" Penalty: {round(current_soc_pen, 3)}")
 
-                            else: reward += self.score_config.fully_charged_reward  # reward for fully charging the car
+                            else: 
+                                reward += self.score_config.fully_charged_reward  # reward for fully charging the car
 
                         # caretaker, other operation times, check for violation
                         elif self.target_soc[car] - self.episode.soc[car] > self.eps:
@@ -946,7 +943,7 @@ class FleetEnv(gym.Env):
             high_obs = None
             raise ValueError("Problem with environment setup. Check building and pv flags.")
 
-       return low_obs.astype(np.float32), high_obs.astype(np.float32) 
+        return low_obs.astype(np.float32), high_obs.astype(np.float32) 
 
     def adjust_caretaker_lunch_soc(self):
         """

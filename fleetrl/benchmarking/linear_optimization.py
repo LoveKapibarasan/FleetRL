@@ -62,8 +62,8 @@ class LinearOptimization(Benchmark):
         start_time = lin_norm_vec_env.env_method("get_wrapper_attr","get_start_time")[0]()
         end_time = pd.to_datetime(start_time) + dt.timedelta(hours=self.n_steps) - dt.timedelta(minutes=15)
 
-        first_date = df["date"].min()
-        last_date = df["date"].min() + dt.timedelta(hours=self.n_steps) - dt.timedelta(minutes=15)
+        df["date"].min()
+        df["date"].min() + dt.timedelta(hours=self.n_steps) - dt.timedelta(minutes=15)
         df = df[df.groupby(by="ID").date.transform(lambda x: ((x <= end_time) & (x >= start_time)))].reset_index(drop=True)
 
         # Extracting information from the df
@@ -223,7 +223,7 @@ class LinearOptimization(Benchmark):
         model.cs12 = pyo.Constraint(model.timestep, model.ev_id, rule=pv_use)
         model.cs13 = pyo.Constraint(model.timestep, model.ev_id, rule=pv_avail)
 
-        timestep_set = pyo.RangeSet(0, length_time_load_pv - 1)
+        pyo.RangeSet(0, length_time_load_pv - 1)
 
         def obj_fun(m):
             return (sum([((m.charging_signal[i, ev] * evse_max_power - m.used_pv[i, ev]) / self.time_steps_per_hour) *

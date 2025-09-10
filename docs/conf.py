@@ -6,10 +6,8 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-import datetime
 import os
 import sys
-from typing import Dict
 
 # import FleetRL
 # from FleetRL.fleet_env.config.ev_config import EvConfig

@@ -52,7 +52,7 @@ class NightCharging(Benchmark):
         df = env.db
         df_leaving_home = df[(df['Location'].shift() == 'home') & (df['Location'] == 'driving')]
         earliest_dep_time = df_leaving_home['date'].dt.time.min()
-        day_of_earliest_dep = df_leaving_home[df_leaving_home['date'].dt.time == earliest_dep_time]['date'].min()
+        df_leaving_home[df_leaving_home['date'].dt.time == earliest_dep_time]['date'].min()
         earliest_dep = earliest_dep_time.hour + earliest_dep_time.minute / 60
 
         evse = env.load_calculation.evse_max_power
