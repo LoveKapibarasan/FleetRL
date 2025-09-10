@@ -33,7 +33,7 @@ Building load was taken from the [NREL TMY-3 dataset](https://doi.org/10.25984/1
 
 **Installation**
 
-> **_NOTE:_**  Python == 3.10 is strongly recommended.
+> **_NOTE:_**  Python == 3.13 is strongly recommended.
 
 > **_NOTE:_**  The creation of a virtual environment is strongly recommended.
 > To be able to use GPU compute, CUDA drivers must be installed
