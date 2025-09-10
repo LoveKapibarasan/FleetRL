@@ -59,7 +59,7 @@ class LinearOptimization(Benchmark):
         # Lambda function filters out unnecessary data, but preserves database structure
 
         lin_norm_vec_env.reset()
-        start_time = lin_norm_vec_env.env_method("get_start_time")[0]
+        start_time = lin_norm_vec_env.env_method("get_wrapper_attr","get_start_time")[0]()
         end_time = pd.to_datetime(start_time) + dt.timedelta(hours=self.n_steps) - dt.timedelta(minutes=15)
 
         first_date = df["date"].min()

@@ -200,8 +200,8 @@ class BasicEvaluation(Evaluation):
         ax.xaxis.set_major_locator(mdates.MonthLocator())
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
 
-        ax.set_xticklabels(ax.get_xticklabels()[0:12])[0:12]
-        ax.set_xticks(ax.get_xticks()[0:12])[0:12]
+        #ax.set_xticklabels(ax.get_xticklabels()[0:12])[0:12]
+        #ax.set_xticks(ax.get_xticks()[0:12])[0:12]
         # Show the plot
         plt.grid(alpha=0.2)
 
@@ -235,7 +235,7 @@ class BasicEvaluation(Evaluation):
             benchmark_log['Action'] = benchmark_log['Action'].apply(lambda x: x[0])
 
         # Create a figure with two subplots side by side
-        fig, axs = plt.subplots(1, 2, figsize=(8, 3))
+        fig, axs = plt.subplots(2, 1, figsize=(8, 6), constrained_layout=True)
 
         # Plot the distribution of actions for the RL-based strategy on the first subplot
         axs[0].hist(rl_log['Action'], bins=50, color='blue', edgecolor='black')
@@ -249,7 +249,6 @@ class BasicEvaluation(Evaluation):
         axs[1].set_xlabel('Action')
         axs[1].set_ylabel('Frequency')
 
-        plt.tight_layout()
         plt.show()
 
     def plot_detailed_actions(self,
@@ -383,12 +382,17 @@ class BasicEvaluation(Evaluation):
         for i, label in enumerate(secondary_labels):
             fig.update_yaxes(title_text=label, row=i + 1, col=1, secondary_y=True)
 
+        n_rows = len(chosen_dfs) + 1
+        base_height = 270
+
         fig.update_layout(
-            # width=1050,
-            # height=1400,
+            height=base_height * n_rows,
+            autosize=True,
             margin=dict(l=35, r=45, t=25, b=25),
-            font=dict(size=16)
+            font=dict(size=16),
         )
+
+        fig.show(config={"responsive": True})
 
         fig.update_layout(
             legend_tracegroupgap=20,

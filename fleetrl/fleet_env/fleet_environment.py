@@ -946,7 +946,7 @@ class FleetEnv(gym.Env):
             high_obs = None
             raise ValueError("Problem with environment setup. Check building and pv flags.")
 
-        return low_obs, high_obs
+       return low_obs.astype(np.float32), high_obs.astype(np.float32) 
 
     def adjust_caretaker_lunch_soc(self):
         """

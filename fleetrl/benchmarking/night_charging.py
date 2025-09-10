@@ -79,14 +79,14 @@ class NightCharging(Benchmark):
         charging = False
 
         for i in range(episode_length * self.time_steps_per_hour * n_episodes):
-            if night_norm_vec_env.env_method("get_wrapper_attr", "is_done")[0]:
+            if night_norm_vec_env.env_method("get_wrapper_attr", "is_done")[0]():
                 night_norm_vec_env.reset()
-            time: pd.Timestamp = night_norm_vec_env.env_method("get_time")[0]
+            time: pd.Timestamp = night_norm_vec_env.env_method("get_wrapper_attr", "get_time")[0]()
             if ((time.hour >= 11) and (time.hour <= 14)) and (use_case == "ct"):
                 night_norm_vec_env.step(
                     ([np.clip(np.multiply(np.ones(self.n_evs), night_norm_vec_env.env_method("get_wrapper_attr", "get_dist_factor")[0]), 0, 1)]))
                 continue
-            time: pd.Timestamp = night_norm_vec_env.env_method("get_time")[0]
+            time: pd.Timestamp = night_norm_vec_env.env_method("get_wrapper_attr", "get_time")[0]()
             if (((charging_hour <= time.hour) and (charging_minute <= time.minute)) or (charging)):
                 if not charging:
                     charging_start: pd.Timestamp = copy(time)

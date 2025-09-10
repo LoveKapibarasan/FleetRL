@@ -161,3 +161,14 @@ fleetrl/Internal_Files/*
 tests/
 
 MANIFEST.in
+
+
+# Evaluated Agent
+rl_agents/trained_agents/*
+
+!rl_agents/trained_agents/LMD_arbitrage_1e6_steps_example_agent/
+!rl_agents/trained_agents/LMD_arbitrage_1e6_steps_example_agent/**
+
+# Generated csv
+inputs/my_custom_schedule.csv
+inputs/my_custom_schedule_test.csv*
